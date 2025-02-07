@@ -10,7 +10,7 @@
 
 - **STACK :**
 
-  - **Fair Share** : `1.7.0`
+  - **Fair Share** : `1.8.0`
   - **React** : `18.3.1`
   - **React Dom** : `18.3.1`
 
@@ -25,4 +25,4 @@
 - **CREDITS :**
 
   - **Author : [David Gómez](https://github.com/DavidGomezToca)**
-  - **Resources : [Flaticon](https://www.flaticon.com/)**
+  - **Icons : [Font Awesome](https://fontawesome.com)**
