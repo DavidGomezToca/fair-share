@@ -161,7 +161,7 @@ function FriendList({ friends, selectedFriend, onSelection }) {
   const visibleFriends = friends.slice(0, 5)
 
   return (
-    <ul>{visibleFriends.map(friend => <Friend key={friend.id} friend={friend} selectedFriend={selectedFriend} onSelection={onSelection} />)}</ul >
+    <ul>{visibleFriends.map(friend => <Friend key={friend.id} friend={friend} selectedFriend={selectedFriend} onSelection={onSelection} />)}</ul>
   )
 }
 
@@ -208,11 +208,12 @@ function Friend({ friend, selectedFriend, onSelection }) {
  * @param {any} children - The children of the button.
  * @param {function} onClick - The function to execute when the button is clicked.
  * @param {boolean} selected - Check if the button is selected.
+ * @param {string} className - Default = "" - Aditional Class Name if necesary.
  * @returns {JSX.Element} - The Friend component.
  */
-function Button({ children, onClick, selected }) {
+function Button({ children, onClick, selected, className = "" }) {
   return (
-    <button className={`button ${selected ? "button-selected" : ""}`} onClick={onClick}> {children}</button>
+    <button className={`button ${selected ? "button-selected" : ""} ${className}`} onClick={onClick}> {children}</button>
   )
 }
 
@@ -255,7 +256,7 @@ function FormAddFriend({ onAddFriend }) {
   return (
     <form className="form-add-friend" onSubmit={handleSubmit}>
       <InputText inputName="friend-name" value={name} setValue={setName}>👬Friend Name</InputText>
-      <Button>Add</Button>
+      <Button className={!name ? "disabled" : ""}>Add</Button>
     </form>
   )
 }

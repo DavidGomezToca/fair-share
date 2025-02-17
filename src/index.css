@@ -295,6 +295,11 @@ form h2 {
   height: 4rem;
 }
 
+.disabled {
+  filter: grayscale();
+  cursor: not-allowed;
+}
+
 @media (max-width: 1200px) {
   .app {
     grid-template-columns: 1fr;
