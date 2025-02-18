@@ -9,43 +9,43 @@ import SocialMediaData from "../data/socialMediaData.json"
 export default function App() {
   /**
    * List of friends.
-   * @type {object, function}.
+   * @type {[object, function]}.
    */
   const [friends, setFriends] = useState(FriendsData.friends)
 
   /**
    * Check if show the add friend form.
-   * @type {boolean, function}.
+   * @type {[boolean, function]}.
    */
   const [showAddFriend, setShowAddFriend] = useState(false)
 
   /**
    * Selected friend.
-   * @type {object, function}.
+   * @type {[object, function]}.
    */
   const [selectedFriend, setSelectedFriend] = useState(friends[3])
 
   /**
    * Check if show the message.
-   * @type {boolean, function}.
+   * @type {[boolean, function]}.
    */
   const [showMessage, setShowMessage] = useState(false)
 
   /**
    * Check if the split was successful.
-   * @type {boolean, function}.
+   * @type {[boolean, function]}.
    */
   const [splitSuccess, setSplitSuccess] = useState(false)
 
   /**
    * Current page.
-   * @type {number, function}.
+   * @type {[number, function]}.
    */
   const [currentPage, setCurrentPage] = useState(1)
 
   /**
    * Quantity of friends per page.
-   * @type {number, function}.
+   * @type {[number, function]}.
    */
   const friendsPerPage = 5
 
@@ -105,18 +105,20 @@ export default function App() {
    * Handle go to the next page.
    */
   function handleNextPage() {
-    if (currentPage < Math.ceil(friends.length / friendsPerPage)) {
+    if (currentPage < Math.ceil(friends.length / friendsPerPage))
       setCurrentPage((prev) => prev + 1)
-    }
+    else
+      setCurrentPage(1)
   }
 
   /**
    * Handle go to the previous page.
    */
   function handlePreviousPage() {
-    if (currentPage > 1) {
+    if (currentPage > 1)
       setCurrentPage((prev) => prev - 1)
-    }
+    else
+      setCurrentPage(Math.ceil(friends.length / friendsPerPage))
   }
 
   return (
@@ -124,13 +126,13 @@ export default function App() {
       <div className="sidebar">
         <FriendList friends={currentFriends} selectedFriend={selectedFriend} onSelection={handleSelection} />
         <div className="pagination">
-          <Button onClick={handlePreviousPage} disabled={currentPage === 1}>
+          <Button onClick={handlePreviousPage}>
             Previous
           </Button>
           <span>
             Page {currentPage} of {Math.ceil(friends.length / friendsPerPage)}
           </span>
-          <Button onClick={handleNextPage} disabled={currentPage === Math.ceil(friends.length / friendsPerPage)}>
+          <Button onClick={handleNextPage}>
             Next
           </Button>
         </div>
@@ -225,7 +227,7 @@ function Button({ children, onClick, selected, className = "" }) {
 function FormAddFriend({ onAddFriend }) {
   /**
    * The name of the new friend.
-   * @type {string, function}.
+   * @type {[string, function]}.
    */
   const [name, setName] = useState("")
 
@@ -289,31 +291,31 @@ function InputText({ inputName, children, value, setValue }) {
 function FormSplitBill({ selectedFriend, onSplitBill, setShowMessage, setSplitSuccess }) {
   /**
    * The bill value.
-   * @type {number, function}.
+   * @type {[number, function]}.
    */
   const [bill, setBill] = useState(0)
 
   /**
    * The value of the bill that corresponds to the user.
-   * @type {number, function}.
+   * @type {[number, function]}.
    */
   const [paidByUser, setPaidByUser] = useState(0)
 
   /**
    * Who is paying the bill.
-   * @type {string, function}.
+   * @type {[string, function]}.
    */
   const [whoIsPaying, setWhoIsPaying] = useState("user")
 
   /**
    * Check if the input bill is validated.
-   * @type {boolean, function}.
+   * @type {[boolean, function]}.
    */
   const [inputBillValidated, setInputBillValidated] = useState(true)
 
   /**
    * The value of the bill that corresponds to the friend.
-   * @type {boolean, function}.
+   * @type {[boolean, function]}.
    */
   const paidByFriend = bill ? bill - paidByUser : 0
 
