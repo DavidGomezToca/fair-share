@@ -1,12 +1,25 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import FriendsData from "../data/friendsData.json"
 import SocialMediaData from "../data/socialMediaData.json"
+import { TranslationsContext } from "../contexts/TranslationsContext"
 
 /**
  * @component App.
  * @returns {JSX.Element} - The App component.
  */
 export default function App() {
+  /**
+   * Translations context.
+   * @type {{object}}.
+   */
+  const { language, translations, changeLanguage } = useContext(TranslationsContext)
+
+  /**
+   * Texts translated.
+   * @type {object}.
+   */
+  const texts = translations
+
   /**
    * List of friends.
    * @type {[object, function]}.
@@ -124,25 +137,28 @@ export default function App() {
   return (
     <div className="app">
       <div className="sidebar">
-        <FriendList friends={currentFriends} selectedFriend={selectedFriend} onSelection={handleSelection} />
+        <FriendList texts={texts} friends={currentFriends} selectedFriend={selectedFriend} onSelection={handleSelection} />
         <div className="pagination">
           <Button onClick={handlePreviousPage}>
-            Previous
+            {texts[8]}
           </Button>
           <span>
-            Page {currentPage} of {Math.ceil(friends.length / friendsPerPage)}
+            {texts[9]} {currentPage} {texts[10]} {Math.ceil(friends.length / friendsPerPage)}
           </span>
           <Button onClick={handleNextPage}>
-            Next
+            {texts[11]}
           </Button>
         </div>
-        {showAddFriend && <FormAddFriend onAddFriend={handleAddFriend} />}
-        <Button onClick={handleShowAddFriend}>{showAddFriend ? "Close" : "Add friend"}</Button>
+        {showAddFriend && <FormAddFriend texts={texts} onAddFriend={handleAddFriend} />}
+        <Button onClick={handleShowAddFriend}>{showAddFriend ? texts[4] : texts[12]}</Button>
       </div>
       <div>
-        {selectedFriend && <FormSplitBill selectedFriend={selectedFriend} onSplitBill={handleSplitBill} setShowMessage={setShowMessage} setSplitSuccess={setSplitSuccess} />}
-        {showMessage && <Message setShowMessage={setShowMessage} splitSuccess={splitSuccess} />}
-        <SocialMedia />
+        {selectedFriend && <FormSplitBill texts={texts} selectedFriend={selectedFriend} onSplitBill={handleSplitBill} setShowMessage={setShowMessage} setSplitSuccess={setSplitSuccess} />}
+        {showMessage && <Message texts={texts} setShowMessage={setShowMessage} splitSuccess={splitSuccess} />}
+        <div className="bottom-section">
+          <SocialMedia />
+          <img className="language-flag" src={`flags/${language}.png`} alt={`Language Flag ${language}`} onClick={() => changeLanguage()} />
+        </div>
       </div>
     </div>
   )
@@ -150,12 +166,13 @@ export default function App() {
 
 /**
  * @component FriendList.
+ * @param {object} texts - The Translated Texts.
  * @param {object} friends - The friends list.
  * @param {object} selectedFriend - The selected friend.
  * @param {function} onSelection - Select a friend.
  * @returns {JSX.Element} - The Friend List component.
  */
-function FriendList({ friends, selectedFriend, onSelection }) {
+function FriendList({ texts, friends, selectedFriend, onSelection }) {
   /**
    * List of the friends to show.
    * @type {object}.
@@ -163,18 +180,19 @@ function FriendList({ friends, selectedFriend, onSelection }) {
   const visibleFriends = friends.slice(0, 5)
 
   return (
-    <ul>{visibleFriends.map(friend => <Friend key={friend.id} friend={friend} selectedFriend={selectedFriend} onSelection={onSelection} />)}</ul>
+    <ul>{visibleFriends.map(friend => <Friend texts={texts} key={friend.id} friend={friend} selectedFriend={selectedFriend} onSelection={onSelection} />)}</ul>
   )
 }
 
 /**
  * @component Friend.
+ * @param {object} texts - The Translated Texts.
  * @param {object} friend - The friends.
  * @param {object} selectedFriend - The selected friend.
  * @param {function} onSelection - Select a friend.
  * @returns {JSX.Element} - The Friend component.
  */
-function Friend({ friend, selectedFriend, onSelection }) {
+function Friend({ texts, friend, selectedFriend, onSelection }) {
   /**
    * Check if the friend is selected.
    * @type {boolean}.
@@ -187,20 +205,20 @@ function Friend({ friend, selectedFriend, onSelection }) {
       <h3>{friend.name}</h3>
       {friend.balance < 0 && (
         <p className="red">
-          You owe {friend.name} {Math.abs(friend.balance)}€
+          {texts[0]} {friend.name} {Math.abs(friend.balance)}€
         </p>
       )}
       {friend.balance > 0 && (
         <p className="green">
-          {friend.name} owes you {Math.abs(friend.balance)}€
+          {friend.name} {texts[1]} {Math.abs(friend.balance)}€
         </p>
       )}
       {friend.balance === 0 && (
         <p>
-          You and {friend.name} are even
+          {texts[2]} {friend.name} {texts[3]}
         </p>
       )}
-      <Button onClick={() => onSelection(friend)} selected={isSelected}>{isSelected ? "Close" : "Select"}</Button>
+      <Button onClick={() => onSelection(friend)} selected={isSelected}>{isSelected ? texts[4] : texts[5]}</Button>
     </li>
   )
 }
@@ -221,10 +239,11 @@ function Button({ children, onClick, selected, className = "" }) {
 
 /**
  * @component FormAddFriend.
+ * @param {object} texts - The Translated Texts.
  * @param {function} onAddFriend - Add a friend.
  * @returns {JSX.Element} - The Form Add Friend component.
  */
-function FormAddFriend({ onAddFriend }) {
+function FormAddFriend({ texts, onAddFriend }) {
   /**
    * The name of the new friend.
    * @type {[string, function]}.
@@ -257,8 +276,8 @@ function FormAddFriend({ onAddFriend }) {
 
   return (
     <form className="form-add-friend" onSubmit={handleSubmit}>
-      <InputText inputName="friend-name" value={name} setValue={setName}>👬Friend Name</InputText>
-      <Button className={!name ? "disabled" : ""}>Add</Button>
+      <InputText inputName="friend-name" value={name} setValue={setName}>👬{texts[6]}</InputText>
+      <Button className={!name ? "disabled" : ""}>{texts[7]}</Button>
     </form>
   )
 }
@@ -282,13 +301,14 @@ function InputText({ inputName, children, value, setValue }) {
 
 /**
  * @component FormSplitBill.
+ * @param {object} texts - The Translated Texts.
  * @param {object} selectedFriend - The selected friend.
  * @param {function} onSplitBill - Split a bill.
  * @param {function} setShowMessage - Set if show the message.
  * @param {function} setSplitSuccess - Set if the split was successful.
  * @returns {JSX.Element} - The Form Split Bill component.
  */
-function FormSplitBill({ selectedFriend, onSplitBill, setShowMessage, setSplitSuccess }) {
+function FormSplitBill({ texts, selectedFriend, onSplitBill, setShowMessage, setSplitSuccess }) {
   /**
    * The bill value.
    * @type {[number, function]}.
@@ -359,23 +379,23 @@ function FormSplitBill({ selectedFriend, onSplitBill, setShowMessage, setSplitSu
 
   return (
     <form className="form-split-bill" onSubmit={handleSubmit}>
-      <h2>Split a bill with {selectedFriend.name}</h2>
+      <h2>{texts[13]} {selectedFriend.name}</h2>
       <div>
-        <label htmlFor="bill-value">💰 Bill value</label>
+        <label htmlFor="bill-value">💰 {texts[14]}</label>
       </div>
       <div className="form-split-bill-input-div">
         <input id="bill-value" name="bill-value" className="form-split-bill-input" type="number" value={bill} onChange={(e) => handleBill(Number(e.target.value))} maxLength={10} />
-        <p className={`form-input-validation-message ${inputBillValidated ? "validated" : ""}`}>* Must be above 0 *</p>
+        <p className={`form-input-validation-message ${inputBillValidated ? "validated" : ""}`}>* {texts[15]} *</p>
       </div>
       <div>
-        <label htmlFor="your-expense">🙍‍♂️ Your expense</label>
+        <label htmlFor="your-expense">🙍‍♂️ {texts[16]}</label>
       </div>
       <div className="form-split-bill-input-div">
         <input id="your-expense" name="your-expense" className="form-split-bill-input" type="number" value={paidByUser} onChange={(e) => setPaidByUser(Number(e.target.value) <= bill && Number(e.target.value) >= 0 ? Number(e.target.value) : paidByUser)} maxLength={10} />
       </div>
-      <InputReadOnly inputName={"friend-expense"} paidByFriend={paidByFriend}>👬 {selectedFriend.name}'s expense</InputReadOnly>
-      <InputSelect inputName={"person-paying"} selectedFriend={selectedFriend.name} whoIsPaying={whoIsPaying} setWhoIsPaying={setWhoIsPaying}>🤑 Who is paying the bill</InputSelect>
-      <Button>Split bill</Button>
+      <InputReadOnly inputName={"friend-expense"} paidByFriend={paidByFriend}>👬 {texts[17]}{selectedFriend.name}{texts[18]}</InputReadOnly>
+      <InputSelect texts={texts} inputName={"person-paying"} selectedFriend={selectedFriend.name} whoIsPaying={whoIsPaying} setWhoIsPaying={setWhoIsPaying}>🤑 {texts[20]}</InputSelect>
+      <Button>{texts[21]}</Button>
     </form>
   )
 }
@@ -400,6 +420,7 @@ function InputReadOnly({ inputName, children, paidByFriend }) {
 
 /**
  * @component InputSelect.
+ * @param {object} texts - The Translated Texts.
  * @param {string} inputName - The name of the input.
  * @param {any} children - The children of the input.
  * @param {object} selectedFriend - The selected friend.
@@ -407,12 +428,12 @@ function InputReadOnly({ inputName, children, paidByFriend }) {
  * @param {function} setWhoIsPaying - Set the person who is paying the bill.
  * @returns {JSX.Element} - The Input Select component.
  */
-function InputSelect({ inputName, children, selectedFriend, whoIsPaying, setWhoIsPaying }) {
+function InputSelect({ texts, inputName, children, selectedFriend, whoIsPaying, setWhoIsPaying }) {
   return (
     <>
       <label htmlFor={inputName}>{children}</label>
       <select id={inputName} name={inputName} value={whoIsPaying} onChange={(e) => setWhoIsPaying((e.target.value))}>
-        <option value="user">You</option>
+        <option value="user">{texts[19]}</option>
         <option value="friend">{selectedFriend}</option>
       </select>
     </>
@@ -421,18 +442,19 @@ function InputSelect({ inputName, children, selectedFriend, whoIsPaying, setWhoI
 
 /**
  * @component Message.
+ * @param {object} texts - The Translated Texts.
  * @param {function} setShowMessage - Set if show the message.
  * @param {boolean} splitSuccess - Check if the split was successful.
  * @returns {JSX.Element} - The Message component.
  */
-function Message({ setShowMessage, splitSuccess }) {
+function Message({ texts, setShowMessage, splitSuccess }) {
   return (
     <div className="message-div">
       <div className="message-text">
-        <p>{splitSuccess ? "Bill split succesfully!!" : "Splitting this bill won't affect your current balance."}</p>
+        <p>{splitSuccess ? texts[22] : texts[23]}</p>
       </div>
       <div className="close-message-div">
-        <button className="close-message-button" onClick={() => setShowMessage(false)}>ACCEPT</button>
+        <button className="close-message-button" onClick={() => setShowMessage(false)}>{texts[24]}</button>
       </div>
     </div>
   )

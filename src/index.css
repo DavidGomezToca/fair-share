@@ -267,11 +267,19 @@ form h2 {
   transform: scale(1.02);
 }
 
+.bottom-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+  margin-top: 2rem;
+}
+
 .social-media {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 2rem;
-  margin-top: 2rem;
 }
 
 .social-media .icon {
@@ -293,6 +301,17 @@ form h2 {
   font-size: 2.4rem;
   width: 4rem;
   height: 4rem;
+}
+
+.language-flag {
+  width: 7rem;
+  height: 4.4rem;
+  border: solid var(--color-text) 4px;
+  border-radius: 10px;
+}
+
+.language-flag:hover {
+  cursor: pointer;
 }
 
 .disabled {
