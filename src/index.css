@@ -5,7 +5,7 @@
   --color-medium: #ffa94d;
   --color-dark: #ff922b;
   --background-body: #90d1d8;
-  --background-app: #d6c486;
+  --background-core: #d6c486;
   --red: #e03131;
   --green: #66a80f;
   --validation: #e03131;
@@ -33,7 +33,7 @@ body {
   padding: 2rem 0;
 }
 
-.app {
+.core {
   min-height: 66vh;
   display: grid;
   grid-template-columns: 50rem 50rem;
@@ -41,7 +41,7 @@ body {
   align-items: center;
   padding: 2rem;
   border-radius: 20px;
-  background-color: var(--background-app);
+  background-color: var(--background-core);
   box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.75);
 }
 
@@ -267,19 +267,20 @@ form h2 {
   transform: scale(1.02);
 }
 
-.bottom-section {
+/* .bottom-section {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 4rem;
   margin-top: 2rem;
-}
+} */
 
 .social-media {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 2rem;
+  margin-top: 3rem;
 }
 
 .social-media .icon {
@@ -303,6 +304,12 @@ form h2 {
   height: 4rem;
 }
 
+.language-flag-container {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: right;
+}
+
 .language-flag {
   width: 7rem;
   height: 4.4rem;
@@ -320,7 +327,7 @@ form h2 {
 }
 
 @media (max-width: 1200px) {
-  .app {
+  .core {
     grid-template-columns: 1fr;
     row-gap: 4rem;
   }
@@ -328,10 +335,10 @@ form h2 {
 
 @media (max-width: 500px) {
   body {
-    background-color: var(--background-app);
+    background-color: var(--background-core);
   }
 
-  .app {
+  .core {
     box-shadow: none;
     grid-template-columns: minmax(300px, 500px);
     padding: 2rem;

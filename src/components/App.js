@@ -136,30 +136,44 @@ export default function App() {
 
   return (
     <div className="app">
-      <div className="sidebar">
-        <FriendList texts={texts} friends={currentFriends} selectedFriend={selectedFriend} onSelection={handleSelection} />
-        <div className="pagination">
-          <Button onClick={handlePreviousPage}>
-            {texts[8]}
-          </Button>
-          <span>
-            {texts[9]} {currentPage} {texts[10]} {Math.ceil(friends.length / friendsPerPage)}
-          </span>
-          <Button onClick={handleNextPage}>
-            {texts[11]}
-          </Button>
+      <LanguageFlag language={language} changeLanguage={changeLanguage} />
+      <div className="core">
+        <div className="sidebar">
+          <FriendList texts={texts} friends={currentFriends} selectedFriend={selectedFriend} onSelection={handleSelection} />
+          <div className="pagination">
+            <Button onClick={handlePreviousPage}>
+              {texts[8]}
+            </Button>
+            <span>
+              {texts[9]} {currentPage} {texts[10]} {Math.ceil(friends.length / friendsPerPage)}
+            </span>
+            <Button onClick={handleNextPage}>
+              {texts[11]}
+            </Button>
+          </div>
+          {showAddFriend && <FormAddFriend texts={texts} onAddFriend={handleAddFriend} />}
+          <Button onClick={handleShowAddFriend}>{showAddFriend ? texts[4] : texts[12]}</Button>
         </div>
-        {showAddFriend && <FormAddFriend texts={texts} onAddFriend={handleAddFriend} />}
-        <Button onClick={handleShowAddFriend}>{showAddFriend ? texts[4] : texts[12]}</Button>
-      </div>
-      <div>
-        {selectedFriend && <FormSplitBill texts={texts} selectedFriend={selectedFriend} onSplitBill={handleSplitBill} setShowMessage={setShowMessage} setSplitSuccess={setSplitSuccess} />}
-        {showMessage && <Message texts={texts} setShowMessage={setShowMessage} splitSuccess={splitSuccess} />}
-        <div className="bottom-section">
-          <SocialMedia />
-          <img className="language-flag" src={`flags/${language}.png`} alt={`Language Flag ${language}`} onClick={() => changeLanguage()} />
+        <div>
+          {selectedFriend && <FormSplitBill texts={texts} selectedFriend={selectedFriend} onSplitBill={handleSplitBill} setShowMessage={setShowMessage} setSplitSuccess={setSplitSuccess} />}
+          {showMessage && <Message texts={texts} setShowMessage={setShowMessage} splitSuccess={splitSuccess} />}
         </div>
       </div>
+      <SocialMedia />
+    </div>
+  )
+}
+
+/**
+ * @component LanguageFlag.
+ * @param {string} language - The selected language.
+ * @param {function} changeLanguage - Changes the language.
+ * @returns {JSX.Element} - The Friend List component.
+ */
+function LanguageFlag({ language, changeLanguage }) {
+  return (
+    <div className="language-flag-container">
+      <img className="language-flag" src={`flags/${language}.png`} alt={`Language Flag ${language}`} onClick={() => changeLanguage()} />
     </div>
   )
 }
