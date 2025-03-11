@@ -267,20 +267,12 @@ form h2 {
   transform: scale(1.02);
 }
 
-/* .bottom-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4rem;
-  margin-top: 2rem;
-} */
-
 .social-media {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 2rem;
-  margin-top: 3rem;
+  margin-top: 8rem;
 }
 
 .social-media .icon {
@@ -305,7 +297,7 @@ form h2 {
 }
 
 .language-flag-container {
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
   display: flex;
   justify-content: right;
 }
@@ -331,6 +323,10 @@ form h2 {
     grid-template-columns: 1fr;
     row-gap: 4rem;
   }
+
+  .social-media {
+    margin-top: 3rem;
+  }
 }
 
 @media (max-width: 500px) {
@@ -348,5 +344,9 @@ form h2 {
     grid-template-columns: 12rem 14rem;
     width: auto;
     padding: 2rem;
+  }
+
+  .social-media {
+    margin-top: 1rem;
   }
 }
